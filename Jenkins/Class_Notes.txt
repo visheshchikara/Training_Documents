@@ -1,0 +1,214 @@
+
+######################
+Day 2 : 4th July 2025
+######################
+
+	Build Orchestration Tool - Jenkins 
+	
+	DevOps :
+	
+	- Automate Application Builds and Deployments:
+	
+	Jenkins :
+	
+	Jenkins Architecture :
+	
+	- Master & Slave Architecture :
+	
+	DevOps Process/Stages :
+
+		- Continuous Development 
+		- Continuous Integration
+		- Continuous Delivery/Deployment
+		
+		
+	Jenkins:
+	
+	Jenkins -> Build Orchestration Tool :
+	
+	What is Jenkins?
+	
+	
+	Continuous Development & Continuous Integration ::::
+	
+		Using DevOps Approach ::
+			Developers :
+			-- Create Application Source Code 
+			-- Commit the Source Code to Source Code Repository like github
+			
+			Using DevOps Process :
+			Automate ::
+
+			- Build the code - Compile and create artifacts 					
+			- Unit Testing 					
+			- Promote the Application to higher testing Environment					
+			- Notify the Testing/Development Team 	
+
+		Tools :::
+		
+			- Eclipse based IDEs - like Eclipse for Java,Pycharm,Intellij, Visual Studio, Visual Studio Code
+			- Source Code Management Tool - like github/AWS Code Commit/Azure Repos 
+			
+			- Jenkins/AzurePipeline/AWS CodeBuild/gitlab-ci/bamboo/github-actions
+			
+			
+
+	Environment:
+	
+		Dev 
+			Create Source Code!							--> Eclipse/GIT/GITHUB
+			
+		Build 
+			use the code in build enviroment			--> Git 
+			build - compile								--> maven
+			create artitfacts							--> maven
+			unit test 									--> maven,junit
+			
+			promote the artifacts to Test environment   --> Ansible/Deployment plugins/SSH
+		
+		Test 
+			Automated QA Testing 						--> TestNG,Selenium
+			Generate Test Reports 						--> TestNG,Selenium	
+			Validated Test Results 						--> TestNG,Selenium
+			promote the artifacts to Prod environment	--> Ansible/Deployment plugins/SSH 	
+	
+	What is Jenkins :::
+	
+		Jenkins is Open-Source Build Orchestration Tool.
+		Used to Automate the End-to-End Application Build and Deployments
+		Using Jenkins we can create CI/CD Pipelines 
+				
+		Alternative to Jenkins:
+		
+		- Azure Pipelines/AWS CodeBuild/gitlab-ci/bamboo/github-actions
+	
+	Jenkins Architecture ::
+	
+		Jenkins is based on Master-Slave Architecture :::
+		
+
+			Jenkins_Master (VM)				==> Install Jenkins - To Create Jenkins CI/CD Pipeline Jobs/Projects
+				Jenkins_SlaveNode1 (VM)		==> Perform Application Builds - compile/create artifacts
+			
+			
+		Scenario 1: 
+		
+			Client Application : Java Applications 
+			
+				- Wants to build and deploy the Java Applications using Jenkins 
+				
+				- Less Build and Release frequencies - monthly once
+				
+				
+				Recommend to used Just Jenkins Master :
+
+				Jenkins_Master (VM)			==> To Create Jenkins CI/CD Pipeline Jobs/Projects and execute 
+											==> Install jdk, Jenkins, git, maven 
+				
+				
+				
+		Scenario 1.1: 
+		
+			Client Application : Java Applications 
+			
+				- Wants to build and deploy the Java Applications using Jenkins 
+				
+				- High Build and Release frequencies
+				
+				
+			Recommended to use Jenkins Master & Slave :
+
+			Jenkins_Master (VM)				
+						==> Install Jenkins - To Create Jenkins CI/CD Pipeline Jobs/Projects and schedule to run in Jenkins_SlaveNodes.			
+				
+				Jenkins_SlaveNode1 (VM)		==> Java 
+				Jenkins_SlaveNode2 (VM)		==> Java 				
+				
+				
+		Scenario 2:
+			
+			Client :	Java/Python/.Net/Ruby/Cobol/Node-JS/Angular
+			
+				- Very High Build and Release frequencies
+				
+				
+				- Wants to build and deploy using Jenkins
+
+
+			Not Recommend to use Just Jenkins Master :
+
+			Jenkins_Master (VM)			==> To Create Jenkins CI/CD Pipeline Jobs/Projects and execute 
+										==> Install jdk, Jenkins, git, maven, Python, .Net,Ruby,Cobol,Node,....				
+
+
+
+			Recommended to use Jenkins Master & Slave :
+			
+			Jenkins_Master (VM)				
+						==> Install Jenkins - To Create Jenkins CI/CD Pipeline Jobs/Projects and schedule to run in Jenkins_SlaveNodes.			
+				
+				Jenkins_SlaveNode1 (VM)		==> Java 
+				Jenkins_SlaveNode1.1 (VM)	==> Java 
+				Jenkins_SlaveNode2 (VM)		==> .Net 
+				Jenkins_SlaveNode3 (VM)		==> Python 
+				Jenkins_SlaveNode4 (VM)		==> Angular/NodeJS
+				Jenkins_SlaveNode5 (VM)		==> Ruby 				
+				
+
+	CI/CD Workflow :::
+	
+		SCM_Checkout 
+		Application Build 
+		Unit Testing 
+		Create Artifacts 
+		Promote the Application to Test Environments
+		Notify 
+		Deploy to Prod 	
+		
+	
+	
+	Working with Jenkins :
+	
+	
+		Developers' Perspective :
+		- Developers are just the consumers of Jenkins using Jenkins Tools and Services.
+		- Developers use Jenkins to execute/cancel/view the output - workspace of the Jenkins projects/Pipelines/Jobs.
+	
+	
+		DevOps Team Perspective :
+		
+		- DevOps Team is the owner of Jenkins.	
+		
+		- Roles & Responsibilities of DevOps Team/Resources :
+		
+			Jenkins Administration :
+			
+			- Installation of Jenkins 
+			- Global System Configuration
+			- Jenkins Plugins Management
+			- Tools Management 
+			- User Management 
+			- Security Management 
+			- Credential Management
+			- Create Jenkins Project in Jenkins Master Node 
+			- Configure the Jenkins Master & Slave Architecture
+			- Create CICD Pipeline Projects to Automate Application Builds & Deployments 
+			- Onboard the Applications to DevOps Process 
+			- Periodic Upgrade of Jenkins Services and Plugins 
+			- Periodic Back-up of Jenkins Server and Jenkins Projects
+			- Trouble-Shoot the Jenkins related Issues
+			
+			
+	- Installation of Jenkins :::	
+				https://www.jenkins.io/doc/book/installing/
+	
+		Package Management :
+		
+			- Jenkins is a package runs as a service in default port 8080.
+			
+				- Install Pre-Requisites 
+				
+				- Install Jenkins 
+				
+				- Post Installation Activities
+			
