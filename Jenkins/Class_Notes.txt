@@ -212,3 +212,71 @@ Day 2 : 4th July 2025
 				
 				- Post Installation Activities
 			
+			
+######################
+Day 3 : 4th July 2025
+######################
+
+	- Jenkins Global System Configuration :::
+	
+		- Set the default properties of Jenkins.
+		- Used to Configure the remote servers to Jenkins 
+	
+	- Jenkins Plugins Management :::
+	
+		- Install/Uninstall/Enable/Disable Jenkins Plugins
+		
+	
+	- Tools Management :::
+	
+		- Used to Add the Home Directories of the Tools 
+	
+	
+	- User Management :::
+	
+		- Enable User Authentication
+		- Used to Create/Delete/Update Users
+	
+	
+	- Security Management :::
+	
+		- Enable User Authorization using Matrix Based Security Option
+		
+		
+	- Credential Management :::
+	
+		- Used maintain the Credentials of remote servers in Jenkins Credential Manager
+	
+	
+	- Create Jenkins Project in Jenkins Master Node :::
+	
+		- Create Jenkins Projects/Jobs :
+		
+			- Free-Style Projects		# Is completely Manual Configurations
+			
+			
+		Working with Variables :
+		
+			- Environment Variables :: pre-defined Jenkins Keywords
+			
+			
+				Handling Jenkins Variables :::
+				
+					- "${var_name}"
+					
+					- Eg.: 
+					
+						"${JOB_NAME}"
+			
+			
+			
+			- User Defined Variables :::
+			
+				- x = 5 
+			
+Next :::		
+			
+	- Pipeline Projects 		# Is completely Automated Project created using Groovy Scripts
+			
+			
+	
