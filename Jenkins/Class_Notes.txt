@@ -396,3 +396,236 @@ Next :::
 	- Email Notifications 
 	
 	- Build Triggers 	
+
+
+######################
+Day 5 : 10th July 2025
+######################	
+	
+
+	- Enable Deployment to Tomcat Server using Jenkins :::
+	
+		What is Deployment ?
+		
+			- Process of Copying the Artifacts to the Target Server!
+			
+			
+			Source Server 																		Target Server
+
+				- Slave_Node 																		- Tomcat_Server
+				
+					- Source file 																		- Target path 
+					
+						target/*.war																		/opt/tomcat/webapps	
+						
+	
+	
+	- Publish Over SSH Plugin to Copy the Artifacts from Jenkins Slave Node to Tomcat Server	
+	
+		- Login to Jenkins Master --> Manage Jenkins --> Plugins --> Available Plugins tab - search for Publish Over SSH Plugin & Install with restart option.
+		
+		
+	- Goto Manage Jenkins --> System Configuration --> Configuration Tomcat Server using Publish Over SSH Plugin Configuration
+	
+
+
+
+pipeline {
+    agent { label 'slave1' }
+
+    stages {
+        stage('SCM_Checkout') {
+            steps {
+                echo 'Perform SCM_Checkout'
+				git 'https://github.com/SA-DevOps-0207/java-webapp-project.git'
+            }
+        }
+        stage('Application_Build') {
+            steps {
+                echo 'Perform Application_Build'
+				sh 'mvn clean package'
+            }
+        }
+        stage('Deploy to Target Server') {
+            steps {
+                script{
+					sshPublisher(publishers: [sshPublisherDesc(configName: 'QA_Server', transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: '', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '.', remoteDirectorySDF: false, removePrefix: 'target/', sourceFiles: 'target/*.war')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])				
+				}
+            }
+        }
+    }
+}
+	
+	
+	- Email Notifications :::
+	
+		In Jenkins Pipeline Jobs, Email Notifications can be done as a post build action.
+		
+		
+		Stage{}
+		post{
+			success 
+			failure 
+			abort
+		}
+		
+To Setup the Email Notifications, First we need to set the Email Server in the Jenkins System configuration :
+
+		gmail Server ==> 
+
+To Setup the Email Notifications, First we need to set the Email Server in the Jenkins System configuration :
+
+
+
+
+Login to Gmail :::
+
+Click Manage Account Settings
+
+@Left side panel - select Security 
+
+MFA/Two-Way Authentication --> mobile#
+
+Search for App password in the same page
+
+Name:
+Mail
+
+What ? window
+Which Appln - email	
+
+App Password = 16 bytes of App Password. vaufxwhdbtnlltzr vauf xwhd btnl ltzr
+
+
+
+How to setup the Email Server in the Jenkins Config:
+
+goto manage jenkins -> system configuration 
+
+goto Email Notification 
+		
+SMTP Server :
+smtp.gmail.com	
+
+SMTP Authentication
+	User Name: Enter Email ID 
+	Password : 16 bytes of App Token (Created in Gmail)
+	
+Choose SSL :
+
+SMTP Port :: 465		
+				
+	
+pipeline {
+    agent { label 'slave1' }
+
+    stages {
+        stage('SCM_Checkout') {
+            steps {
+                echo 'Perform SCM_Checkout'
+				git 'https://github.com/SA-DevOps-0207/java-webapp-project.git'
+            }
+            post {
+                failure {
+                  sh "echo 'Send mail on failure'"					  
+					mail bcc: 'l@gmail.com', body: 'Jenkins Jobs Status ', cc: 'l@gmail.com', from: '', replyTo: '', subject: 'SCM-Checkout Failed ', to: 'l@gmail.com'			
+                }
+              }
+        }
+        stage('Application_Build') {
+            steps {
+                echo 'Perform Application_Build'
+				sh 'mvn clean package'
+            }
+        }
+        stage('Deploy to Target Server') {
+            steps {
+                script{
+					sshPublisher(publishers: [sshPublisherDesc(configName: 'QA_Server', transfers: [sshTransfer(cleanRemote: false, excludes: '', execCommand: '', execTimeout: 120000, flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: '.', remoteDirectorySDF: false, removePrefix: 'target/', sourceFiles: 'target/*.war')], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: false)])				
+				}
+				}
+            post {
+                Success {
+                  sh "echo 'Send mail on Success-deployment'"
+				  	
+					mail bcc: 's1.gmail.com', body: '"Jenkins Jobs Status ${BUILD_URL}"', cc: 's1.gmail.com', from: '', replyTo: '', subject: 'Deployment Successful', to: 's1.gmail.com'
+                }
+                Failure {
+                  sh "echo 'Send mail on deployment Failure'"
+				  
+					mail bcc: 's1.gmail.com', body: '"Jenkins Jobs Status ${BUILD_URL}"', cc: 's1.gmail.com', from: '', replyTo: '', subject: 'Deployment Failed', to: 's1.gmail.com'
+                }
+                abort {
+                  sh "echo 'Send mail on deployment Aborted'"
+					mail bcc: 's1.gmail.com', body: '"Jenkins Jobs Status ${BUILD_URL}"', cc: 's1.gmail.com', from: '', replyTo: '', subject: 'Deployment Aborted', to: 's1.gmail.com'
+                }		
+              }
+            }
+        }
+    }
+	
+
+
+	
+	- Build Triggers 		::::
+
+
+		Is used to Automate the Job Scheduling!
+		
+		
+		
+			- Build Periodic 
+			
+			- GitHub Webhook 
+			
+			- PollSCM 
+		
+		
+	
+	
+		- Build Periodic :			# https://crontab.guru/
+			
+			- Used to trigger the jenkins jobs irrespective of code change. - It is not meant for CI/CD.
+			- To perform any process automation
+			- The build is sheduled based on the crontab 
+			
+			
+			Eg.: 
+			
+				Environments :
+				
+					Non-Prod Environments												=====>		Prod Environments
+					
+						Should be available only during the business Hours 								Should be available 24/7
+						
+							9AM - 10PM 
+							
+						Jenkins Project1 		Scheduled to run at 7:45AM
+						
+							- Task - Start all the Non-Prod Servers 
+
+						Jenkins Project2 		Scheduled to run at 10:15PM
+						
+							- Task - Stop all the Non-Prod Servers 							
+							
+		- GitHub Webhook :::
+		
+			- Used to trigger the jenkins Job whenever there is any commit happened in the remote repository
+			- github webhook has be configured in the remote repository by using the jenkins URL			
+
+		
+				Payload Url: 
+				http://43.204.107.80:8080/github-webhook/
+		
+		- PollSCM :::
+		
+			- It is used to trigger the build based on the crontab only if there is any changes happened in the source-code repository.
+			
+			
+			Test Cycles :
+			
+				==>  8AM - 12PM - 3PM
+				
+				QA/UAT Testing  
+			
+			
